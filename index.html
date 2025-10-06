@@ -1,39 +1,269 @@
+<!-- Simpan sebagai index.html -->
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8">
-  <title>Lynzxz Digital Store</title>
-  <style>
-    body { font-family: Arial; max-width: 800px; margin: 40px auto; padding: 10px; }
-    h1 { color: #0366d6; }
-    .produk { border:1px solid #ccc; padding:15px; margin:10px 0; border-radius:8px; }
-    button { background:#0366d6; color:white; padding:10px 16px; border:0; border-radius:6px; cursor:pointer; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ROG CLOUD - Toko Digital</title>
+<meta name="description" content="ROG CLOUD - RDP & VPS, jasa pemulihan akun, script, dan layanan digital lainnya." />
+<style>
+  /* RESET MINIMAL */
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: radial-gradient(ellipse at top right,#081023 0%, #04040a 60%), #000;
+    color:#dfefff; -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale; line-height:1.4;
+    padding-bottom:60px;
+  }
+
+  /* background stars grid */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0;
+    background-image:
+      radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+    background-size: 12px 12px, 240px 240px;
+    pointer-events:none;
+    mix-blend-mode: overlay;
+  }
+
+  /* Container */
+  .wrap{max-width:980px;margin:0 auto;padding:20px;position:relative;z-index:1}
+
+  header{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+  .brand{font-weight:800;font-size:20px}
+  .brand span:first-child{color:#20f1ff}
+  .brand span:last-child{color:#ff3b3b;margin-left:6px}
+
+  nav .menu-btn{background:transparent;border:0;color:#fff;font-size:22px}
+
+  /* Hero */
+  .hero{padding:28px 12px;border-radius:12px;margin:18px 0;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); box-shadow: 0 6px 30px rgba(0,0,0,0.6)}
+  .hero h1{font-size:28px;margin:0 0 8px;color:#7ef0ff}
+  .hero p{margin:0 0 16px;color:#c8d9e6}
+
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{padding:14px 18px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+  .btn-primary{background:linear-gradient(90deg,#ff4b4b,#ff6b6b);color:#fff;box-shadow: 0 6px 18px rgba(255,75,75,0.2)}
+  .btn-outline{background:transparent;border:2px solid rgba(32,241,255,0.9);color:#9feff3}
+
+  /* search & filters */
+  .search{margin:16px 0;display:flex;gap:12px}
+  .search input{flex:1;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(0,0,0,0.35);color:#fff}
+  .filters{display:flex;gap:8px;align-items:center}
+
+  /* Produk grid */
+  .grid{display:grid;grid-template-columns:1fr;gap:18px}
+  @media(min-width:800px){ .grid{grid-template-columns:repeat(2,1fr)} }
+
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.45));
+    border-radius:18px;padding:20px;border:2px solid rgba(32,241,255,0.12);
+    position:relative; overflow:hidden; box-shadow: 0 8px 30px rgba(0,0,0,0.6)
+  }
+  .ribbon{position:absolute;right:-40px;top:12px;background:#21eefc;color:#002;transform:rotate(45deg);padding:6px 70px;font-weight:800;box-shadow:0 6px 20px rgba(0,0,0,0.4);font-size:12px}
+  .card h3{margin:0 0 8px;color:#fff;font-size:20px}
+  .card p.desc{color:#c5d7df;margin:0 0 12px;font-size:14px}
+  .price{font-size:40px;color:#13e0e6;margin:6px 0;font-weight:800}
+  .price small{font-size:14px;color:#cbdbe3;margin-left:8px}
+
+  .buy-row{display:flex;gap:10px;align-items:center;margin-top:12px}
+  .buy-row .buy-btn{flex:1;background:linear-gradient(90deg,#ff5b5b,#ff2b2b);color:#fff;padding:12px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+  .tag{background:rgba(255,255,255,0.03);padding:6px 10px;border-radius:8px;font-size:12px;color:#9fdff0;border:1px solid rgba(32,241,255,0.08)}
+
+  /* Footer */
+  footer{margin-top:30px;color:#9fb6c6;font-size:13px;text-align:center;padding:20px 0 50px}
+
+  /* Modal */
+  .modal{position:fixed;inset:0;background:rgba(2,6,12,0.6);display:none;align-items:center;justify-content:center;z-index:9999}
+  .modal .box{background:#06101a;padding:18px;border-radius:12px;max-width:600px;width:94%;border:1px solid rgba(32,241,255,0.12)}
+  .modal .box h4{margin:0 0 8px}
+  .modal input, .modal textarea, .modal select{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:#fff}
+  .modal .row{display:flex;gap:8px}
+  .modal .row .col{flex:1}
+  .close-btn{background:transparent;border:0;color:#bbb;cursor:pointer;font-size:18px}
+
+  /* small helper */
+  .muted{color:#9fb6c6;font-size:13px}
+</style>
 </head>
 <body>
-  <h1>Selamat Datang di Lynzxz Digital Store</h1>
-  <p>Berbagai layanan digital: instalasi panel, pembuatan map Roblox, dan konsultasi teknis.</p>
+  <div class="wrap">
+    <header>
+      <div class="brand"><span>ROG</span><span>CLOUD</span></div>
+      <nav><button class="menu-btn" aria-label="menu">☰</button></nav>
+    </header>
 
-  <div class="produk">
-    <h2>Instalasi Panel Pterodactyl</h2>
-    <p>Harga: Rp150.000</p>
-    <button onclick="pesan('Instalasi Panel Pterodactyl')">Pesan Sekarang</button>
+    <section class="hero">
+      <h1>ROG CLOUD — RDP & VPS Premium</h1>
+      <p>Akses cepat, stabil, dan harga terjangkau. Layanan instalasi panel, pemulihan akun korban penipuan, pembuatan map Roblox, dan script legal.</p>
+
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="document.querySelector('#popular').scrollIntoView({behavior:'smooth'})">Produk Populer</button>
+        <button class="btn btn-outline" onclick="location.href='#contact'">Kontak / Bantuan</button>
+      </div>
+    </section>
+
+    <div class="search">
+      <input id="search" placeholder="Cari paket..." oninput="filterCards()" />
+      <div class="filters">
+        <button class="btn btn-outline" onclick="sortPrice('asc')">Harga Terendah</button>
+        <button class="btn btn-outline" onclick="sortPrice('desc')">Harga Tertinggi</button>
+      </div>
+    </div>
+
+    <section id="popular">
+      <h2 style="color:#fff">Paket Populer Kami</h2>
+      <p class="muted">Hanya paket terbaik yang kami rekomendasikan untuk Anda</p>
+
+      <div class="grid" id="products">
+        <!-- Card 1 -->
+        <article class="card" data-title="Rdp/Vps 8 Gb 4 Core" data-price="25000">
+          <div class="ribbon">POPULAR</div>
+          <h3>Rdp/Vps 8 Gb 4 Core</h3>
+          <p class="desc">Request Password - Request OS Custom - Request Region - Garansi 10 Hari</p>
+          <div class="price">Rp25.000 <small>/bulan</small></div>
+          <div class="buy-row">
+            <div class="tag">VPS/RDP</div>
+            <button class="buy-btn" onclick="openOrder('Rdp/Vps 8 Gb 4 Core',25000)">Beli Sekarang</button>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="card" data-title="Rdp/Vps 4 Gb 2 Core" data-price="20000">
+          <div class="ribbon">POPULAR</div>
+          <h3>Rdp/Vps 4 Gb 2 Core</h3>
+          <p class="desc">Request Password - Request OS Custom - Request Region</p>
+          <div class="price">Rp20.000 <small>/bulan</small></div>
+          <div class="buy-row">
+            <div class="tag">VPS/RDP</div>
+            <button class="buy-btn" onclick="openOrder('Rdp/Vps 4 Gb 2 Core',20000)">Beli Sekarang</button>
+          </div>
+        </article>
+
+        <!-- Card 3 (contoh layanan non-VPS) -->
+        <article class="card" data-title="Pemulihan Akun WhatsApp" data-price="150000">
+          <h3>Pemulihan Akun WhatsApp</h3>
+          <p class="desc">Pendampingan korban penipuan: screening bukti, template pengaduan, dan panduan klaim.</p>
+          <div class="price">Rp150.000</div>
+          <div class="buy-row">
+            <div class="tag">Layanan</div>
+            <button class="buy-btn" onclick="openOrder('Pemulihan Akun WhatsApp',150000)">Beli Sekarang</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer id="contact">
+      <p class="muted">Untuk order cepat, chat WA kami:</p>
+      <p style="margin:8px 0"><a id="waLink" href="#" target="_blank" style="color:#20efff;font-weight:700;text-decoration:none">Klik untuk chat WhatsApp</a></p>
+      <p class="muted">Setelah transfer, kirim bukti ke WhatsApp agar pesanan diproses.</p>
+      <p style="margin-top:18px;font-size:13px;color:#98b8c7">© <span id="year"></span> ROG CLOUD — Semua hak dilindungi</p>
+    </footer>
   </div>
 
-  <div class="produk">
-    <h2>Pembuatan Map Roblox</h2>
-    <p>Harga: Rp200.000</p>
-    <button onclick="pesan('Pembuatan Map Roblox')">Pesan Sekarang</button>
+  <!-- Modal Order -->
+  <div class="modal" id="modal">
+    <div class="box" role="dialog" aria-modal="true">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h4>Buat Pesanan</h4>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+      </div>
+
+      <form id="orderForm">
+        <input type="hidden" name="produk" id="produkField" />
+        <label>Nama Lengkap<input name="nama" required></label>
+        <label>Email<input name="email" type="email" required></label>
+        <label>Nomor WhatsApp<input name="wa" required placeholder="62812xxxx" /></label>
+        <label>Jumlah (Rp)<input name="jumlah" id="jumlahField" required></label>
+        <label>Keterangan / Bukti (link atau catatan)<textarea name="keterangan" rows="3"></textarea></label>
+
+        <p class="muted">Setelah submit: kami akan mengirim instruksi pembayaran via email & WhatsApp.</p>
+
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button type="button" class="btn btn-outline" onclick="closeModal()">Batal</button>
+          <button type="submit" class="btn btn-primary">Kirim Pesanan</button>
+        </div>
+      </form>
+    </div>
   </div>
 
-  <h3>Hubungi Kami</h3>
-  <p>Kirim pesan ke WhatsApp: <a href="https://wa.me/6282120680023" target="_blank">Klik di sini</a></p>
+<script>
+  // ======= CONFIGURE THIS =======
+  const WA_NUMBER = "62812XXXXXXX"; // ganti dengan nomor WA kamu (without +)
+  const FORM_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID"; // atau Apps Script endpoint
+  // ==============================
 
-  <script>
-    function pesan(namaProduk){
-      alert('Untuk memesan ' + namaProduk + ', silakan chat kami di WhatsApp.');
-      location.href = 'https://wa.me/6282120680023?text=Halo%2C+saya+ingin+pesan+' + encodeURIComponent(namaProduk);
+  document.getElementById('year').textContent = new Date().getFullYear();
+  document.getElementById('waLink').href = "https://wa.me/" + WA_NUMBER;
+
+  // Open modal and prefill values
+  function openOrder(nama, harga){
+    document.getElementById('produkField').value = nama;
+    document.getElementById('jumlahField').value = harga;
+    document.getElementById('modal').style.display = 'flex';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function closeModal(){
+    document.getElementById('modal').style.display = 'none';
+  }
+
+  // Form submit handler - post to Formspree (or your endpoint)
+  document.getElementById('orderForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const form = e.target;
+    const data = new FormData(form);
+    // Convert to object
+    const payload = {};
+    for (const [k,v] of data.entries()) payload[k] = v;
+
+    // Basic validation
+    if(!payload.nama || !payload.email || !payload.wa) return alert('Isi semua kolom wajib.');
+
+    try {
+      // If you use Formspree, send as POST form data; if Apps Script expects JSON, change accordingly.
+      const res = await fetch(FORM_ENDPOINT, {
+        method:'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await res.json().catch(()=>({ok:res.ok}));
+      if(res.ok || result.ok){
+        alert('Pesanan terkirim! Cek email/WA untuk instruksi pembayaran.');
+        closeModal();
+        form.reset();
+      } else {
+        alert('Terjadi masalah saat mengirim. Coba lagi atau hubungi WA langsung.');
+      }
+    } catch(err){
+      console.error(err);
+      alert('Gagal mengirim pesanan: ' + err.message);
     }
-  </script>
+  });
+
+  // Simple search filter
+  function filterCards(){
+    const q = document.getElementById('search').value.toLowerCase();
+    document.querySelectorAll('#products .card').forEach(card=>{
+      const title = card.getAttribute('data-title').toLowerCase();
+      if(!q || title.includes(q)) card.style.display = '';
+      else card.style.display = 'none';
+    });
+  }
+
+  // Sort by price (simple)
+  function sortPrice(dir){
+    const container = document.getElementById('products');
+    const cards = Array.from(container.querySelectorAll('.card'));
+    cards.sort((a,b)=>{
+      const pa = Number(a.getAttribute('data-price')||0);
+      const pb = Number(b.getAttribute('data-price')||0);
+      return dir === 'asc' ? pa-pb : pb-pa;
+    });
+    cards.forEach(c=>container.appendChild(c));
+  }
+</script>
 </body>
 </html>
