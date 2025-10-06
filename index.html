@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <title>Lynzxz Digital Store</title>
+  <style>
+    body { font-family: Arial; max-width: 800px; margin: 40px auto; padding: 10px; }
+    h1 { color: #0366d6; }
+    .produk { border:1px solid #ccc; padding:15px; margin:10px 0; border-radius:8px; }
+    button { background:#0366d6; color:white; padding:10px 16px; border:0; border-radius:6px; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <h1>Selamat Datang di Lynzxz Digital Store</h1>
+  <p>Berbagai layanan digital: instalasi panel, pembuatan map Roblox, dan konsultasi teknis.</p>
+
+  <div class="produk">
+    <h2>Instalasi Panel Pterodactyl</h2>
+    <p>Harga: Rp150.000</p>
+    <button onclick="pesan('Instalasi Panel Pterodactyl')">Pesan Sekarang</button>
+  </div>
+
+  <div class="produk">
+    <h2>Pembuatan Map Roblox</h2>
+    <p>Harga: Rp200.000</p>
+    <button onclick="pesan('Pembuatan Map Roblox')">Pesan Sekarang</button>
+  </div>
+
+  <h3>Hubungi Kami</h3>
+  <p>Kirim pesan ke WhatsApp: <a href="https://wa.me/6282120680023" target="_blank">Klik di sini</a></p>
+
+  <script>
+    function pesan(namaProduk){
+      alert('Untuk memesan ' + namaProduk + ', silakan chat kami di WhatsApp.');
+      location.href = 'https://wa.me/6282120680023?text=Halo%2C+saya+ingin+pesan+' + encodeURIComponent(namaProduk);
+    }
+  </script>
+</body>
+</html>
