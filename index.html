@@ -1,128 +1,323 @@
 <!doctype html>
 <html lang="id">
 <head>
-  <meta charset="utf-8">
-  <title>Lynzxz Digital Store</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    /* === SETTING TAMPILAN UTAMA === */
-    body { 
-      font-family: Arial, sans-serif; 
-      margin: 0; 
-      padding: 0; 
-      background: #f7f9fc; 
-      color: #222;
-    }
-    header {
-      background: linear-gradient(135deg, #007bff, #0052cc);
-      color: white; 
-      padding: 20px;
-      text-align: center;
-    }
-    header h1 { margin: 0; font-size: 26px; }
-    header p { margin: 5px 0 0; font-size: 14px; }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Lynzxz Digital Store</title>
+<meta name="description" content="Lynzxz Digital Store — jasa digital, pemulihan akun, mod APK, pembuatan website, editing video, dan produk digital lainnya." />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050206;
+    --card:#061118;
+    --glass: rgba(255,255,255,0.03);
+    --neon-red: #ff3b3b;
+    --neon-cyan: #20f1ff;
+    --muted: #9fb6c6;
+    --accent: linear-gradient(90deg,var(--neon-red),#ff7a7a);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(32,241,255,0.03), transparent 8%),
+                radial-gradient(900px 400px at 90% 90%, rgba(255,59,59,0.03), transparent 8%),
+                var(--bg);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color:#dfefff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    padding-bottom:60px;
+  }
 
-    .container { 
-      max-width: 800px; 
-      margin: 30px auto; 
-      background: white; 
-      border-radius: 10px; 
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      padding: 20px;
-    }
+  /* container */
+  .wrap{max-width:1100px;margin:28px auto;padding:20px;position:relative;z-index:1}
 
-    .produk {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 15px;
-      transition: 0.3s;
-    }
-    .produk:hover { box-shadow: 0 0 8px rgba(0,0,0,0.15); }
-    .produk h2 { margin: 0; font-size: 18px; color: #007bff; }
-    .produk p { margin: 5px 0; }
-    .status { font-weight: bold; color: #d9534f; }
-    .btn {
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .btn:hover { background: #0056b3; }
+  /* header */
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .logo{
+    width:56px;height:56px;border-radius:10px;
+    background:linear-gradient(135deg,var(--neon-cyan),var(--neon-red));
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:#020202;
+    box-shadow:0 10px 30px rgba(0,0,0,0.6), 0 0 20px rgba(32,241,255,0.06);
+    transform: translateY(0); transition:transform .25s ease;
+  }
+  .brand h1{margin:0;font-size:20px;letter-spacing:0.6px}
+  .brand p{margin:0;font-size:12px;color:var(--muted)}
 
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 14px;
-      color: #555;
-    }
-    footer a { color: #007bff; text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
-  </style>
+  nav .contact{
+    display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted)
+  }
+  .chip{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.25));
+    padding:8px 12px;border-radius:999px;border:1px solid rgba(32,241,255,0.06);
+  }
+
+  /* hero */
+  .hero{
+    margin-top:18px;padding:26px;border-radius:14px;background:
+    linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.5));
+    box-shadow:0 10px 40px rgba(0,0,0,0.6);
+    overflow:hidden;position:relative;
+    transform: translateY(10px); opacity:0; animation:fadeInUp .7s forwards .1s;
+  }
+  .hero h2{margin:0;color:var(--neon-cyan);font-size:26px}
+  .hero p{margin:8px 0 0;color:#cfeaf2}
+
+  .cta-row{display:flex;gap:12px;margin-top:14px}
+  .btn{
+    padding:12px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:700;
+    background:var(--accent); color:#080808; box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:hover{transform:translateY(-4px); box-shadow:0 18px 40px rgba(0,0,0,0.6)}
+  .btn.outline{
+    background:transparent;color:var(--neon-cyan);border:1px solid rgba(32,241,255,0.12);
+    box-shadow:none;font-weight:600;
+  }
+
+  /* search */
+  .bar{display:flex;gap:12px;margin-top:18px}
+  .bar input{
+    flex:1;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);
+    background:transparent;color:#e6f7ff;outline:none;font-size:14px;
+    box-shadow: inset 0 -2px 20px rgba(0,0,0,0.25);
+  }
+
+  /* grid */
+  .grid{display:grid;grid-template-columns:1fr;gap:18px;margin-top:20px}
+  @media(min-width:900px){ .grid{grid-template-columns:repeat(2,1fr)} }
+
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.5));
+    border-radius:14px;padding:18px;border:1px solid rgba(255,255,255,0.03);
+    position:relative; overflow:hidden; transition:transform .18s ease, box-shadow .18s ease;
+    transform: translateY(18px); opacity:0; animation:fadeInUp .6s forwards;
+  }
+  .card:nth-child(1){animation-delay:.18s}
+  .card:nth-child(2){animation-delay:.24s}
+  .card:nth-child(3){animation-delay:.30s}
+  .card:nth-child(4){animation-delay:.36s}
+  .card:hover{transform:translateY(-8px); box-shadow: 0 18px 60px rgba(0,0,0,0.6);}
+
+  .ribbon{
+    position:absolute;right:-48px;top:12px;background:linear-gradient(90deg,var(--neon-cyan),var(--neon-red));
+    color:#020202;padding:6px 72px;font-weight:800;transform:rotate(45deg);font-size:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.6);
+  }
+  .card h3{margin:0;font-size:20px;color:#ffffff}
+  .card p.desc{margin:8px 0 10px;color:#bcdfe7;font-size:13px}
+  .price{font-size:34px;color:var(--neon-cyan);font-weight:800;margin-top:6px}
+  .tag{display:inline-block;padding:6px 10px;border-radius:8px;font-size:12px;background:rgba(255,255,255,0.02);color:#bfeff6;border:1px solid rgba(32,241,255,0.06)}
+
+  .card .row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+  .buy-btn{
+    padding:12px 14px;border-radius:10px;border:0;font-weight:800;cursor:pointer;
+    background: linear-gradient(90deg,#ff5b5b,#ff2b2b); color:#fff;
+    box-shadow:0 10px 30px rgba(255,59,59,0.12);
+    transition:transform .12s ease;
+  }
+  .buy-btn:hover{transform:translateY(-4px)}
+  .disabled{opacity:.45;cursor:not-allowed; filter:grayscale(.05)}
+
+  /* footer */
+  footer{margin-top:26px;text-align:center;color:var(--muted);font-size:13px;padding:40px 0 20px}
+
+  /* modal quick info */
+  .info-modal{position:fixed;right:18px;bottom:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.6));padding:12px;border-radius:12px;border:1px solid rgba(32,241,255,0.06);box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+  .info-modal a{color:var(--neon-cyan);text-decoration:none;font-weight:700}
+
+  /* small helper */
+  .muted{color:var(--muted);font-size:13px}
+  .sold{background:linear-gradient(90deg,#666,#333);padding:6px 10px;border-radius:8px;color:#fff;font-size:12px}
+
+  /* animations */
+  @keyframes fadeInUp {
+    to { transform: translateY(0); opacity:1; }
+  }
+</style>
 </head>
 <body>
-  <!-- ======== BAGIAN MUDAH DIUBAH ======== -->
-  <script>
-    const kontak = {
-      whatsapp: "6282120680023",
-      email: "fynrxt@gmail.com",
-      telegram: "@Lynzxzmodder",
-      metode: ["DANA", "GoPay", "ShopeePay"]
-    };
+  <div class="wrap">
+    <!-- ========== EDIT CONFIG DI BAGIAN INI ========== -->
+    <script>
+      // ----------------- CONFIG (ubah di sini) -----------------
+      const CONFIG = {
+        storeName: "Lynzxz Digital Store",
+        year: new Date().getFullYear(),
+        // whatsapp number for wa.me (use country code, no plus, e.g. 62812...)
+        whatsapp: "6282120680023",
+        email: "fynrxt@gmail.com",
+        telegram: "@Lynzxzmodder",
+        paymentsText: "DANA • GoPay • ShopeePay"
+      };
 
-    const etalase = [
-      { nama: "Instalasi Panel Pterodactyl", harga: "Rp150.000", status: "Ready" },
-      { nama: "Pembuatan Map Roblox", harga: "Rp200.000", status: "Ready" },
-      { nama: "Jasa Buat Website", harga: "Rp250.000", status: "Ready" },
-      { nama: "Jasa Edit Video", harga: "Rp100.000", status: "Ready" },
-      { nama: "Jasa Mod APK (custom project)", harga: "Rp150.000", status: "Request Only" },
-      { nama: "Nomor Kosong All Platform", harga: "Rp30.000", status: "Sold Out" }
-    ];
-  </script>
-  <!-- ======== AKHIR BAGIAN MUDAH DIUBAH ======== -->
+      const PRODUCTS = [
+        { id: "p1", title: "Rdp/Vps 8 Gb 4 Core", desc: "Request Password - Request OS Custom - Garansi 10 Hari", price: 25000, unit: "/bulan", tag: "VPS/RDP", status: "Ready", badge: "POPULAR" },
+        { id: "p2", title: "Rdp/Vps 4 Gb 2 Core", desc: "Request Password - Request OS Custom", price: 20000, unit: "/bulan", tag: "VPS/RDP", status: "Ready", badge: "POPULAR" },
+        { id: "p3", title: "Pemulihan Akun WhatsApp", desc: "Pendampingan korban penipuan: screening bukti, template pengaduan.", price: 150000, unit: "", tag: "Layanan", status: "Ready" },
+        { id: "p4", title: "Jasa Buat Website", desc: "Buat website statis / landing page / toko sederhana. Paket mulai dari 250rb.", price: 250000, unit: "", tag: "Jasa", status: "Ready" },
+        { id: "p5", title: "Jasa Edit Video", desc: "Editing video promosi, potongan reels, subtitle, color grading.", price: 100000, unit: "", tag: "Jasa", status: "Ready" },
+        { id: "p6", title: "Jasa Mod APK (Custom Project)", desc: "Modifikasi APK sesuai kebutuhan (hanya legal & permitted). Hubungi untuk diskusi scope.", price: 150000, unit: "", tag: "Custom", status: "Request Only" },
+        { id: "p7", title: "Nomor Kosong All Platform", desc: "Nomor kosong siap pakai (ketersediaan bergantung stok).", price: 30000, unit: "", tag: "Produk", status: "Sold Out" },
+        { id: "p8", title: "Beli Script & Template", desc: "Script dan template untuk game / bot / website (lisensi personal).", price: 50000, unit: "", tag: "Digital", status: "Ready" }
+      ];
+      // ----------------- END CONFIG -----------------
+    </script>
+    <!-- ========== END EDIT CONFIG ========== -->
 
-  <header>
-    <h1>Lynzxz Digital Store</h1>
-    <p>Jasa Digital • Kustom Project • Fast Response</p>
-  </header>
+    <header>
+      <div class="brand">
+        <div class="logo" title="Lynzxz"><span style="font-weight:900">LX</span></div>
+        <div>
+          <h1 id="site-title">Lynzxz Digital Store</h1>
+          <p id="site-sub" class="muted">Digital goods • jasa recovery • mod & dev</p>
+        </div>
+      </div>
 
-  <div class="container" id="produk-container">
-    <!-- Produk akan dimasukkan otomatis lewat JavaScript -->
+      <nav>
+        <div class="contact">
+          <div class="chip">WA: <strong id="wa-txt">0821-2068-0023</strong></div>
+          <div class="chip">Pay: <strong id="pay-txt">DANA • GoPay</strong></div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="hero" aria-hidden="false">
+      <h2 id="headline">ROG-style Digital Store — Profesional & Aman</h2>
+      <p class="muted">Layanan cepat, dokumentasi, dan pendampingan untuk korban penipuan. Pesan via WhatsApp dan konfirmasi manual. Pembayaran: <span id="payments-text"></span></p>
+      <div class="cta-row">
+        <button class="btn" onclick="scrollToProducts()">Lihat Produk Populer</button>
+        <button class="btn outline" onclick="openContact()">Kontak & Bantuan</button>
+      </div>
+
+      <div class="bar" style="margin-top:18px">
+        <input id="search" placeholder="Cari produk... ketik nama / tag" oninput="renderProducts()" />
+        <button class="btn outline" onclick="sortLowHigh()">Harga ↑</button>
+      </div>
+    </section>
+
+    <main id="products-section" style="margin-top:18px">
+      <h3 style="margin:0 0 6px 0;color:#fff">Etalase & Paket</h3>
+      <p class="muted" style="margin-top:0">Klik "Beli Sekarang" untuk buka chat WA dengan pesan otomatis.</p>
+
+      <div class="grid" id="grid">
+        <!-- cards injected by script -->
+      </div>
+    </main>
+
+    <footer>
+      <p>Kontak: <a id="wa-link" href="#" target="_blank" style="color:var(--neon-cyan);font-weight:700">WhatsApp</a> • <a id="tg-link" href="#" style="color:var(--neon-cyan);font-weight:700" target="_blank">Telegram</a> • <a id="mail-link" href="#" style="color:var(--neon-cyan);font-weight:700">Email</a></p>
+      <p class="muted">Pembayaran: <span id="payments-footer"></span> • Nomor: <strong>082120680023</strong></p>
+      <p style="margin-top:12px;color:#8fb9c9">&copy; <span id="year"></span> Lynzxz Digital Store — Profesional & Aman</p>
+    </footer>
   </div>
 
-  <footer>
-    <p>Hubungi kami: 
-      <a href="https://wa.me/6282120680023" target="_blank">WhatsApp</a> |
-      <a href="mailto:fynrxt@gmail.com">Email</a> |
-      <a href="https://t.me/Lynzxzmodder" target="_blank">Telegram</a>
-    </p>
-    <p>Pembayaran via: DANA, GoPay, ShopeePay</p>
-    <p>&copy; 2025 Lynzxz Digital Store</p>
-  </footer>
+  <div class="info-modal">
+    <div style="display:flex;gap:8px;align-items:center">
+      <div style="width:8px;height:8px;border-radius:999px;background:var(--neon-cyan);box-shadow:0 6px 20px rgba(32,241,255,0.12)"></div>
+      <div style="font-size:13px">Butuh cepat? <a id="wa-quick" href="#" target="_blank">Chat WA sekarang</a></div>
+    </div>
+  </div>
 
-  <script>
-    // === Bagian otomatis menampilkan produk ===
-    const container = document.getElementById("produk-container");
-    etalase.forEach(item => {
-      const div = document.createElement("div");
-      div.className = "produk";
-      div.innerHTML = `
-        <h2>${item.nama}</h2>
-        <p>Harga: ${item.harga}</p>
-        <p>Status: <span class="status">${item.status}</span></p>
-        <button class="btn" ${item.status !== "Ready" ? "disabled" : ""} onclick="pesan('${item.nama}')">
-          Pesan Sekarang
-        </button>
-      `;
-      container.appendChild(div);
-    });
+<script>
+  // ---------- RENDER & INTERACTIVITY (tidak perlu ubah kecuali mau) ----------
+  document.getElementById('site-title').textContent = CONFIG.storeName || 'Lynzxz Digital Store';
+  document.getElementById('payments-text').textContent = CONFIG.paymentsText || '';
+  document.getElementById('payments-footer').textContent = CONFIG.paymentsText || '';
+  document.getElementById('year').textContent = CONFIG.year || new Date().getFullYear();
+  document.getElementById('wa-link').href = "https://wa.me/" + CONFIG.whatsapp;
+  document.getElementById('wa-quick').href = "https://wa.me/" + CONFIG.whatsapp;
+  document.getElementById('tg-link').href = "https://t.me/" + (CONFIG.telegram.replace(/^@/,''));
+  document.getElementById('mail-link').href = "mailto:" + CONFIG.email;
+  document.getElementById('wa-txt').textContent = formatPhone(CONFIG.whatsapp);
+  document.getElementById('pay-txt').textContent = CONFIG.paymentsText;
 
-    function pesan(produk) {
-      const pesanText = `Halo, saya ingin pesan *${produk}* dari Lynzxz Digital Store.`;
-      window.open(`https://wa.me/${kontak.whatsapp}?text=${encodeURIComponent(pesanText)}`, "_blank");
+  // helper: format 628212... to 0821-2068-0023 (simple)
+  function formatPhone(wa){
+    if(!wa) return '';
+    let s = wa;
+    if(s.startsWith('62')) s = '0' + s.slice(2);
+    return s.replace(/(\d{4})(\d{4})(\d{3,})/, '$1-$2-$3');
+  }
+
+  // build product cards
+  function money(x){
+    if(typeof x !== 'number') return x;
+    return 'Rp' + x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  function createCard(p){
+    const outer = document.createElement('article');
+    outer.className = 'card';
+    // badge/ribbon
+    let html = '';
+    if(p.badge) html += `<div class="ribbon">${p.badge}</div>`;
+    html += `<h3>${p.title}</h3>`;
+    html += `<p class="desc">${p.desc}</p>`;
+    html += `<div class="price">${money(p.price)} <small style="color:#9fb6c6;margin-left:8px">${p.unit||''}</small></div>`;
+    html += `<div style="margin-top:8px"><span class="tag">${p.tag||'Produk'}</span> <span style="margin-left:8px" class="muted">Status: </span> `;
+    html += (p.status === 'Sold Out') ? `<span class="sold">Sold Out</span>` : `<strong style="margin-left:6px">${p.status}</strong>`;
+    html += `</div>`;
+    html += `<div class="row"><div class="muted">ID: ${p.id}</div>`;
+    if(p.status === 'Ready'){
+      html += `<button class="buy-btn" onclick="buyProduct('${encodeURIComponent(p.title)}', ${p.price})">Beli Sekarang</button>`;
+    } else if(p.status === 'Request Only'){
+      html += `<button class="buy-btn" onclick="buyProduct('${encodeURIComponent(p.title)}', ${p.price})">Request</button>`;
+    } else {
+      html += `<button class="buy-btn disabled" disabled>Unavailable</button>`;
     }
-  </script>
+    html += `</div>`;
+    outer.innerHTML = html;
+    return outer;
+  }
+
+  function renderProducts(){
+    const q = (document.getElementById('search').value || '').toLowerCase().trim();
+    const grid = document.getElementById('grid');
+    grid.innerHTML = '';
+    const products = PRODUCTS.filter(p=>{
+      if(!q) return true;
+      return (p.title + ' ' + p.desc + ' ' + (p.tag||'')).toLowerCase().includes(q);
+    });
+    products.forEach(p=>{
+      const card = createCard(p);
+      grid.appendChild(card);
+    });
+  }
+
+  function scrollToProducts(){
+    document.getElementById('products-section').scrollIntoView({behavior:'smooth'});
+  }
+
+  function openContact(){
+    window.open("https://wa.me/" + CONFIG.whatsapp, "_blank");
+  }
+
+  function buyProduct(titleEncoded, price){
+    const title = decodeURIComponent(titleEncoded);
+    const phone = CONFIG.whatsapp;
+    // prefill message
+    const msg = `Halo, saya ingin pesan *${title}* dari ${CONFIG.storeName}. Harga: ${money(price)}. Nama: [isi nama]. Alamat / detail: [tulis detail].`;
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
+  }
+
+  // basic sort toggle
+  let sortAsc = false;
+  function sortLowHigh(){
+    sortAsc = !sortAsc;
+    PRODUCTS.sort((a,b)=> sortAsc ? (a.price - b.price) : (b.price - a.price));
+    renderProducts();
+  }
+
+  // initial render
+  renderProducts();
+  // small entrance animation on logo
+  setTimeout(()=>{ document.querySelector('.logo').style.transform = 'translateY(-3px) scale(1.02)'; }, 300);
+
+</script>
 </body>
 </html>
