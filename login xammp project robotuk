@@ -1,0 +1,185 @@
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: LoginPage(),
+    );
+  }
+}
+
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  String _message = '';
+
+  Future<void> _login() async {
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2/api.php'),  // Ganti ke IP laptop jika test di real device
+      body: {
+        'action': 'login',
+        'username': _usernameController.text,
+        'password': _passwordController.text,
+      },
+    );
+    final data = json.decode(response.body);
+    setState(() {
+      _message = data['status'] == 'success' ? 'Login berhasil, role: ${data['role']}' : 'Login gagal';
+    });
+    if (data['status'] == 'success') {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => DashboardPage(role: data['role'])));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Login Penyiram Tanaman')),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(controller: _usernameController, decoration: InputDecoration(labelText: 'Username')),
+            TextField(controller: _passwordController, decoration: InputDecoration(labelText: 'Password'), obscureText: true),
+            ElevatedButton(onPressed: _login, child: Text('Login')),
+            ElevatedButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterPage())), child: Text('Register')),
+            Text(_message),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class RegisterPage extends StatefulWidget {
+  @override
+  _RegisterPageState createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  String _message = '';
+
+  Future<void> _register() async {
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2/api.php'),
+      body: {
+        'action': 'register',
+        'username': _usernameController.text,
+        'password': _passwordController.text,
+      },
+    );
+    final data = json.decode(response.body);
+    setState(() {
+      _message = data['status'] == 'registered' ? 'Register berhasil' : 'Register gagal';
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Register')),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(controller: _usernameController, decoration: InputDecoration(labelText: 'Username')),
+            TextField(controller: _passwordController, decoration: InputDecoration(labelText: 'Password'), obscureText: true),
+            ElevatedButton(onPressed: _register, child: Text('Register')),
+            Text(_message),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DashboardPage extends StatefulWidget {
+  final String role;
+  DashboardPage({required this.role});
+
+  @override
+  _DashboardPageState createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+  double _duration = 5.0;
+  List _logs = [];
+  bool _maintenance = false;
+
+  Future<void> _getLogs() async {
+    final response = await http.post(Uri.parse('http://10.0.2.2/api.php'), body: {'action': 'get_logs'});
+    setState(() {
+      _logs = json.decode(response.body);
+    });
+  }
+
+  Future<void> _setDuration(int duration) async {
+    await http.post(Uri.parse('http://10.0.2.2/api.php'), body: {'action': 'set_duration', 'duration': duration.toString()});
+  }
+
+  Future<void> _toggleMaintenance() async {
+    if (widget.role == 'developer') {
+      await http.post(Uri.parse('http://10.0.2.2/api.php'), body: {'action': 'toggle_maintenance', 'role': widget.role, 'status': _maintenance ? 'off' : 'on'});
+      setState(() {
+        _maintenance = !_maintenance;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getLogs();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Dashboard Penyiram Tanaman')),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            if (widget.role == 'developer') Text('Mode Developer'),
+            if (_maintenance) Text('Maintenance Mode: Penyiraman Disabled', style: TextStyle(color: Colors.red)),
+            Slider(
+              value: _duration,
+              min: 1,
+              max: 10,
+              onChanged: (value) => setState(() => _duration = value),
+            ),
+            Text('Durasi: ${_duration.toInt()} menit'),
+            ElevatedButton(onPressed: () => _setDuration(_duration.toInt()), child: Text('Set Durasi')),
+            ElevatedButton(onPressed: _maintenance ? null : () => _manualWater(), child: Text('Penyiraman Manual')),
+            if (widget.role == 'developer') ElevatedButton(onPressed: _toggleMaintenance, child: Text(_maintenance ? 'Enable Penyiraman' : 'Disable Maintenance')),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _logs.length,
+                itemBuilder: (context, index) => ListTile(title: Text(_logs[index]['message'])),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _manualWater() async {
+    // Placeholder for valve control
+    setState(() {
+      _logs.add({'message': 'Penyiraman manual oleh user'});
+    });
+  }
+}
